@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Studio</title>
+
+  <!--
+  INTEGRATION NOTES
+  ------------------
+  Everything you need lives inside <main class="cp-contact-page"> below.
+  All classes are prefixed "cp-" so they won't collide with your site's
+  existing styles — copy the <main>...</main> block plus the <style>
+  and <script> contents into your layout.
+
+  Placeholder content to swap for the real thing:
+   - Email, phone, address           -> search "REPLACE: contact details"
+   - Social handles / links          -> search "REPLACE: social links"
+   - FAQ copy                        -> search "REPLACE: faq copy"
+   - Footer links / brand name       -> search "REPLACE: footer"
+
+  Icons: Email / phone / address / the FAQ toggle / the social arrow now
+  use Google's Material Symbols font (a real, free Google CDN, so it
+  always loads). Google Fonts doesn't host brand logos though, so the
+  six social platform marks (Facebook, Instagram, etc.) are still
+  hand-built outline icons matched to the same stroke weight.
+-->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <style>
+    /* Drop this block when pasting into a page that already resets margins */
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #FBFAF8;
+    }
+
+    :root {
+      --cp-paper: #FBFAF8;
+      --cp-paper-soft: #F1EFEA;
+      --cp-surface: #FFFFFF;
+      --cp-ink: #17181A;
+      --cp-ink-soft: #63665F;
+      --cp-line: #E2DFD6;
+      --cp-accent: #6E4FE0;
+      --cp-accent-soft: #EDE7FB;
+
+      --cp-lav-bg: #ECE6FB;
+      --cp-lav-fg: #6E4FE0;
+      --cp-peach-bg: #FBE7D6;
+      --cp-peach-fg: #E07A2E;
+      --cp-mint-bg: #DFF3E9;
+      --cp-mint-fg: #219A6C;
+      --cp-sky-bg: #E1EFFB;
+      --cp-sky-fg: #2E7FCB;
+
+      --cp-maxw: 1160px;
+      --cp-ease: cubic-bezier(.16, .8, .24, 1);
+      --cp-radius-lg: 26px;
+    }
+
+    .cp-contact-page,
+    .cp-contact-page * {
+      box-sizing: border-box;
+    }
+
+    .cp-contact-page {
+      background: var(--cp-paper);
+      color: var(--cp-ink);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    .cp-contact-page img,
+    .cp-contact-page svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    .cp-contact-page button {
+      font: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cp-contact-page a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .cp-contact-page :focus-visible {
+      outline: 2px solid var(--cp-accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* Google's recommended base rule for the Material Symbols font */
+    .cp-contact-page .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .cp-container {
+      max-width: var(--cp-maxw);
+      margin: 0 auto;
+      padding: 0 clamp(20px, 5vw, 64px);
+    }
+
+    .cp-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      letter-spacing: -0.01em;
+      color: var(--cp-ink);
+      margin: 0 0 clamp(24px, 3.5vw, 36px) 0;
+    }
+
+    .cp-faq-badge {
+      display: inline-block;
+      padding: 8px 20px;
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-line);
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: .92rem;
+      letter-spacing: .02em;
+      color: var(--cp-ink);
+      margin: 0 0 clamp(24px, 3.5vw, 36px) 0;
+    }
+
+    /* ============ COLORFUL BACKDROP (hero + faq + details only) ============ */
+    .cp-colorwrap {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cp-colorwrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(560px 480px at 10% 6%, var(--cp-lav-bg) 0%, transparent 68%),
+        radial-gradient(600px 520px at 94% 16%, var(--cp-peach-bg) 0%, transparent 68%),
+        radial-gradient(640px 560px at 16% 82%, var(--cp-mint-bg) 0%, transparent 68%),
+        radial-gradient(600px 520px at 90% 92%, var(--cp-sky-bg) 0%, transparent 68%);
+      pointer-events: none;
+    }
+
+    .cp-colorwrap>* {
+      position: relative;
+      z-index: 1;
+    }
+
+    @media (prefers-reduced-motion:no-preference) {
+      .cp-colorwrap::before {
+        animation: cpDrift 30s ease-in-out infinite alternate;
+      }
+    }
+
+    @keyframes cpDrift {
+      0% {
+        transform: translate(0, 0) scale(1.02);
+      }
+
+      100% {
+        transform: translate(-1.5%, 1.5%) scale(1.08);
+      }
+    }
+
+    /* ============ HERO ============ */
+    .cp-hero {
+      padding-top: clamp(84px, 13vw, 150px);
+      padding-bottom: clamp(52px, 7vw, 96px);
+    }
+
+    .cp-hero__inner {
+      max-width: 760px;
+    }
+
+    .cp-hero h1 {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: clamp(4rem, 9vw, 7.5rem);
+      line-height: 1.05;
+      color: var(--cp-ink);
+      margin: 0 0 clamp(14px, 2vw, 20px) 0;
+    }
+
+    .cp-hero p {
+      font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+      line-height: 1.6;
+      color: var(--cp-ink-soft);
+      max-width: 42ch;
+      margin: 0;
+    }
+
+    @media (prefers-reduced-motion:no-preference) {
+
+      .cp-hero__inner>h1,
+      .cp-hero__inner>p {
+        opacity: 0;
+        transform: translateY(16px);
+        animation: cpFadeUp .85s var(--cp-ease) forwards;
+      }
+
+      .cp-hero__inner>h1 {
+        animation-delay: .05s;
+      }
+
+      .cp-hero__inner>p {
+        animation-delay: .3s;
+      }
+    }
+
+    @keyframes cpFadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ============ FAQ ============ */
+    .cp-faq {
+      padding-bottom: clamp(60px, 7vw, 100px);
+    }
+
+    .cp-faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .cp-faq-item {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-line);
+      border-radius: var(--cp-radius-lg);
+      transition: background-color .3s ease, border-color .3s ease, box-shadow .3s ease;
+    }
+
+    .cp-faq-item:hover {
+      border-color: transparent;
+      box-shadow: 0 14px 34px -22px rgba(20, 20, 15, .22);
+    }
+
+    .cp-faq-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      text-align: left;
+      padding: clamp(18px, 2.6vw, 25px) clamp(20px, 4vw, 30px);
+    }
+
+    .cp-faq-q {
+      font-size: clamp(1rem, 1.5vw, 1.1rem);
+      font-weight: 600;
+      color: var(--cp-ink);
+    }
+
+    .cp-faq-icon {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--cp-accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color .3s ease, transform .35s var(--cp-ease);
+    }
+
+    .cp-faq-item.is-open .cp-faq-icon,
+    .cp-faq-item:hover .cp-faq-icon {
+      transform: scale(1.08);
+    }
+
+    .cp-faq-icon .material-symbols-outlined {
+      font-size: 19px;
+      color: var(--cp-accent);
+      transition: transform .35s var(--cp-ease);
+    }
+
+    .cp-faq-item.is-open .cp-faq-icon .material-symbols-outlined {
+      transform: rotate(45deg);
+    }
+
+    .cp-faq-panel {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows .35s var(--cp-ease);
+    }
+
+    .cp-faq-item.is-open .cp-faq-panel {
+      grid-template-rows: 1fr;
+    }
+
+    .cp-faq-panel__inner {
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .cp-faq-panel p {
+      margin: 0;
+      padding: 0 clamp(20px, 4vw, 30px) clamp(20px, 2.6vw, 25px);
+      max-width: 62ch;
+      font-size: .98rem;
+      line-height: 1.65;
+      color: var(--cp-ink-soft);
+      opacity: 0;
+      transform: translateY(-2px);
+      transition: opacity .2s ease, transform .2s ease;
+    }
+
+    .cp-faq-item.is-open .cp-faq-panel p {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============ DETAILS: contact info + social ============ */
+    .cp-details {
+      padding-bottom: clamp(80px, 9vw, 120px);
+    }
+
+    .cp-details__grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: clamp(44px, 6vw, 90px);
+    }
+
+    /* -- contact info cards -- */
+    .cp-info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+    }
+
+    .cp-info-card {
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-line);
+      border-radius: 22px;
+      padding: 24px 22px;
+      transition: transform .35s var(--cp-ease), box-shadow .35s ease, border-color .3s ease;
+    }
+
+    .cp-info-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 40px -22px rgba(20, 20, 15, .2);
+      border-color: transparent;
+    }
+
+    .cp-info-card__icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform .35s var(--cp-ease);
+    }
+
+    .cp-info-card:hover .cp-info-card__icon {
+      transform: scale(1.08) rotate(-4deg);
+    }
+
+    .cp-info-card__icon .material-symbols-outlined {
+      font-size: 22px;
+    }
+
+    .cp-info-card.is-lav .cp-info-card__icon {
+      background: var(--cp-lav-bg);
+      color: var(--cp-lav-fg);
+    }
+
+    .cp-info-card.is-peach .cp-info-card__icon {
+      background: var(--cp-peach-bg);
+      color: var(--cp-peach-fg);
+    }
+
+    .cp-info-card.is-mint .cp-info-card__icon {
+      background: var(--cp-mint-bg);
+      color: var(--cp-mint-fg);
+    }
+
+    .cp-info-card__label {
+      font-size: .82rem;
+      color: var(--cp-ink-soft);
+      margin: 0 0 4px 0;
+    }
+
+    .cp-info-card__value {
+      font-weight: 700;
+      font-size: 1.02rem;
+      line-height: 1.35;
+      color: var(--cp-ink);
+    }
+
+    /* -- social cards -- */
+    .cp-social-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .cp-social-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: var(--cp-surface);
+      border: 1px solid var(--cp-line);
+      border-radius: 18px;
+      padding: 14px 18px;
+      transition: transform .3s var(--cp-ease), box-shadow .3s ease, border-color .3s ease;
+    }
+
+    .cp-social-row:hover,
+    .cp-social-row:focus-visible {
+      transform: translateY(-3px) translateX(2px);
+      box-shadow: 0 14px 30px -20px rgba(20, 20, 15, .22);
+      border-color: transparent;
+    }
+
+    .cp-social-row__left {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+    }
+
+    .cp-social-row__icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: var(--cp-ink);
+      transition: color .3s ease, transform .3s var(--cp-ease);
+    }
+
+    .cp-social-row:hover .cp-social-row__icon {
+      color: var(--cp-accent);
+      transform: scale(1.1);
+    }
+
+    .cp-social-row__name {
+      display: block;
+      font-size: .98rem;
+      font-weight: 600;
+      color: var(--cp-ink);
+    }
+
+    .cp-social-row__handle {
+      display: block;
+      font-size: .85rem;
+      color: var(--cp-ink-soft);
+      margin-top: 1px;
+    }
+
+    .cp-social-row__arrow {
+      font-size: 17px;
+      flex-shrink: 0;
+      color: var(--cp-accent);
+      opacity: 0;
+      transform: translate(-4px, 4px);
+      transition: opacity .3s ease, transform .3s var(--cp-ease);
+    }
+
+    .cp-social-row:hover .cp-social-row__arrow,
+    .cp-social-row:focus-visible .cp-social-row__arrow {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    /* ============ SCROLL REVEAL ============ */
+    @media (prefers-reduced-motion:no-preference) {
+      .cp-reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity .6s var(--cp-ease), transform .6s var(--cp-ease);
+      }
+
+      .cp-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ============ FOOTER ============ */
+    .cp-footer {
+      background: var(--cp-paper-soft);
+      border-top: 1px solid var(--cp-line);
+      border-bottom: 1px solid rgba(23, 24, 26, .85);
+      padding: 22px 0;
+    }
+
+    .cp-footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .cp-footer__links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+
+    .cp-footer__links a {
+      font-size: .9rem;
+      color: var(--cp-ink-soft);
+      transition: color .25s ease;
+    }
+
+    .cp-footer__links a:hover {
+      color: var(--cp-ink);
+    }
+
+    .cp-footer__divider {
+      color: var(--cp-line);
+    }
+
+    .cp-footer__copyright {
+      font-size: .88rem;
+      color: var(--cp-ink-soft);
+      margin: 0;
+    }
+
+    @media (max-width:640px) {
+      .cp-footer__inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* ============ RESPONSIVE ============ */
+    @media (max-width:900px) {
+      .cp-details__grid {
+        grid-template-columns: 1fr;
+        gap: 52px;
+      }
+    }
+
+    @media (max-width:560px) {
+      .cp-faq-trigger {
+        gap: 14px;
+      }
+
+      .cp-social-row__arrow {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="cp-contact-page">
+
+    <div class="cp-colorwrap">
+
+      <!-- HERO -->
+      <section class="cp-hero">
+        <div class="cp-container cp-hero__inner">
+          <h1>Let&rsquo;s talk.</h1>
+          <p>Tell us about your project, and we&rsquo;ll help define the right direction with a thoughtful and
+            structured approach.</p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="cp-faq">
+        <div class="cp-container">
+          <span class="cp-faq-badge">FAQs</span>
+          <div class="cp-faq-list">
+
+            <!-- REPLACE: faq copy (item 1) -->
+            <div class="cp-faq-item" data-faq>
+              <button class="cp-faq-trigger" aria-expanded="false" aria-controls="faq-panel-1" id="faq-trigger-1">
+                <span class="cp-faq-q">How do we get started?</span>
+                <span class="cp-faq-icon" aria-hidden="true"><span class="material-symbols-outlined">add</span></span>
+              </button>
+              <div class="cp-faq-panel" id="faq-panel-1" role="region" aria-labelledby="faq-trigger-1">
+                <div class="cp-faq-panel__inner">
+                  <p>Send a short brief with your goals, timeline, and budget range. We&rsquo;ll set up a call within a
+                    few days to talk through the details and see if we&rsquo;re a good fit.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- REPLACE: faq copy (item 2) -->
+            <div class="cp-faq-item" data-faq>
+              <button class="cp-faq-trigger" aria-expanded="false" aria-controls="faq-panel-2" id="faq-trigger-2">
+                <span class="cp-faq-q">What types of projects do you take on?</span>
+                <span class="cp-faq-icon" aria-hidden="true"><span class="material-symbols-outlined">add</span></span>
+              </button>
+              <div class="cp-faq-panel" id="faq-panel-2" role="region" aria-labelledby="faq-trigger-2">
+                <div class="cp-faq-panel__inner">
+                  <p>We work on brand identity, websites, and product design for teams that care about craft. Most
+                    projects come from founders and marketing leads who want something built to last, not just launched.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- REPLACE: faq copy (item 3) -->
+            <div class="cp-faq-item" data-faq>
+              <button class="cp-faq-trigger" aria-expanded="false" aria-controls="faq-panel-3" id="faq-trigger-3">
+                <span class="cp-faq-q">How does the pricing work?</span>
+                <span class="cp-faq-icon" aria-hidden="true"><span class="material-symbols-outlined">add</span></span>
+              </button>
+              <div class="cp-faq-panel" id="faq-panel-3" role="region" aria-labelledby="faq-trigger-3">
+                <div class="cp-faq-panel__inner">
+                  <p>Every project is scoped and quoted individually, based on complexity and timeline. We&rsquo;ll
+                    share a clear proposal before any work begins, so there are no surprises later.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- REPLACE: faq copy (item 4) -->
+            <div class="cp-faq-item" data-faq>
+              <button class="cp-faq-trigger" aria-expanded="false" aria-controls="faq-panel-4" id="faq-trigger-4">
+                <span class="cp-faq-q">How long does a project usually take?</span>
+                <span class="cp-faq-icon" aria-hidden="true"><span class="material-symbols-outlined">add</span></span>
+              </button>
+              <div class="cp-faq-panel" id="faq-panel-4" role="region" aria-labelledby="faq-trigger-4">
+                <div class="cp-faq-panel__inner">
+                  <p>A typical website or brand project runs six to ten weeks from kickoff to launch. Larger or
+                    multi-phase work is scheduled together once we understand the full scope.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- REPLACE: faq copy (item 5) -->
+            <div class="cp-faq-item" data-faq>
+              <button class="cp-faq-trigger" aria-expanded="false" aria-controls="faq-panel-5" id="faq-trigger-5">
+                <span class="cp-faq-q">Can we request revisions?</span>
+                <span class="cp-faq-icon" aria-hidden="true"><span class="material-symbols-outlined">add</span></span>
+              </button>
+              <div class="cp-faq-panel" id="faq-panel-5" role="region" aria-labelledby="faq-trigger-5">
+                <div class="cp-faq-panel__inner">
+                  <p>Yes. Every project includes structured rounds of feedback at key milestones, so changes are easy to
+                    fold in before we move forward.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT INFO + SOCIAL -->
+      <section class="cp-details">
+        <div class="cp-container cp-details__grid">
+
+          <!-- CONTACT INFO -->
+          <div>
+            <h2 class="cp-heading">Get in touch</h2>
+            <div class="cp-info-grid">
+
+              <!-- REPLACE: contact details (email) -->
+              <div class="cp-info-card is-lav cp-reveal">
+                <div class="cp-info-card__icon"><span class="material-symbols-outlined">mail</span></div>
+                <p class="cp-info-card__label">Email</p>
+                <p class="cp-info-card__value">hello@studio.co</p>
+              </div>
+
+              <!-- REPLACE: contact details (phone) -->
+              <div class="cp-info-card is-peach cp-reveal">
+                <div class="cp-info-card__icon"><span class="material-symbols-outlined">call</span></div>
+                <p class="cp-info-card__label">Phone</p>
+                <p class="cp-info-card__value">+1 (212) 555 0143</p>
+              </div>
+
+              <!-- REPLACE: contact details (address) -->
+              <div class="cp-info-card is-mint cp-reveal">
+                <div class="cp-info-card__icon"><span class="material-symbols-outlined">location_on</span></div>
+                <p class="cp-info-card__label">Address</p>
+                <p class="cp-info-card__value">148 Mercer Street, New York, NY 10012</p>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- SOCIAL -->
+          <div>
+            <h2 class="cp-heading">Follow along</h2>
+            <ul class="cp-social-list">
+
+              <!-- REPLACE: social links -->
+              <li>
+                <a class="cp-social-row cp-reveal" href="#" aria-label="Facebook">
+                  <span class="cp-social-row__left">
+                    <svg class="cp-social-row__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="8.5" />
+                      <path d="M13.8 8.6h-1.4c-.7 0-1.1.5-1.1 1.2v1.4h2.4l-.3 2h-2.1V19" />
+                    </svg>
+                    <span><span class="cp-social-row__name">Facebook</span><span
+                        class="cp-social-row__handle">/studio</span></span>
+                  </span>
+                  <span class="material-symbols-outlined cp-social-row__arrow">arrow_outward</span>
+                </a>
+              </li>
+
+              <li>
+                <a class="cp-social-row cp-reveal" href="#" aria-label="Instagram">
+                  <span class="cp-social-row__left">
+                    <svg class="cp-social-row__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3.5" y="3.5" width="17" height="17" rx="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="16.6" cy="7.4" r="0.6" fill="currentColor" stroke="none" />
+                    </svg>
+                    <span><span class="cp-social-row__name">Instagram</span><span
+                        class="cp-social-row__handle">@studio</span></span>
+                  </span>
+                  <span class="material-symbols-outlined cp-social-row__arrow">arrow_outward</span>
+                </a>
+              </li>
+
+              <li>
+                <a class="cp-social-row cp-reveal" href="#" aria-label="LinkedIn">
+                  <span class="cp-social-row__left">
+                    <svg class="cp-social-row__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+                      <line x1="7.6" y1="10.5" x2="7.6" y2="16.3" />
+                      <circle cx="7.6" cy="7.7" r="0.35" fill="currentColor" stroke="none" />
+                      <path d="M10.9 16.3v-3.6c0-1.2.9-2.2 2.1-2.2s2 .9 2 2.2v3.6" />
+                      <line x1="10.9" y1="10.5" x2="10.9" y2="16.3" />
+                    </svg>
+                    <span><span class="cp-social-row__name">LinkedIn</span><span
+                        class="cp-social-row__handle">Studio</span></span>
+                  </span>
+                  <span class="material-symbols-outlined cp-social-row__arrow">arrow_outward</span>
+                </a>
+              </li>
+
+              <li>
+                <a class="cp-social-row cp-reveal" href="#" aria-label="X (Twitter)">
+                  <span class="cp-social-row__left">
+                    <svg class="cp-social-row__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="8.5" />
+                      <path d="M8.3 8.3l7.4 7.4M15.7 8.3l-7.4 7.4" />
+                    </svg>
+                    <span><span class="cp-social-row__name">X</span><span
+                        class="cp-social-row__handle">@studio</span></span>
+                  </span>
+                  <span class="material-symbols-outlined cp-social-row__arrow">arrow_outward</span>
+                </a>
+              </li>
+
+              <li>
+                <a class="cp-social-row cp-reveal" href="#" aria-label="Behance">
+                  <span class="cp-social-row__left">
+                    <svg class="cp-social-row__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="8.5" />
+                      <text x="12" y="15.2" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif"
+                        font-size="7.5" font-weight="700" fill="currentColor" stroke="none">Be</text>
+                    </svg>
+                    <span><span class="cp-social-row__name">Behance</span><span
+                        class="cp-social-row__handle">Studio</span></span>
+                  </span>
+                  <span class="material-symbols-outlined cp-social-row__arrow">arrow_outward</span>
+                </a>
+              </li>
+
+              <li>
+                <a class="cp-social-row cp-reveal" href="#" aria-label="Dribbble">
+                  <span class="cp-social-row__left">
+                    <svg class="cp-social-row__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="8.5" />
+                      <path d="M4.5 9.7c4.3 1.3 8.4 1.3 15 0" />
+                      <path d="M9.4 4c2.6 3.3 4 7.2 4.4 12.8" />
+                      <path d="M6 18.6c2.1-2.9 5.1-4.4 8.9-4.7" />
+                    </svg>
+                    <span><span class="cp-social-row__name">Dribbble</span><span
+                        class="cp-social-row__handle">Studio</span></span>
+                  </span>
+                  <span class="material-symbols-outlined cp-social-row__arrow">arrow_outward</span>
+                </a>
+              </li>
+
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- REPLACE: footer links / brand name -->
+    <footer class="cp-footer">
+      <div class="cp-container cp-footer__inner">
+        <ul class="cp-footer__links">
+          <li><a href="https://en.wikipedia.org/wiki/Bangladesh">Bangladesh 🇧🇩</a></li>
+          <li class="cp-footer__divider" aria-hidden="true">|</li>
+          <li><a href="./privacy-policy.html">Privacy Policy</a></li>
+          <li class="cp-footer__divider" aria-hidden="true">|</li>
+          <li><a href="./terms-of-service.html">Terms &amp; Conditions</a></li>
+        </ul>
+        <p class="cp-footer__copyright">Copyright &copy; <span id="cpYear"></span> Studio. All rights reserved.</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    (function () {
+      document.querySelectorAll('.cp-faq-trigger').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var item = btn.closest('.cp-faq-item');
+          var open = item.classList.toggle('is-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      });
+
+      var yearEl = document.getElementById('cpYear');
+      if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
+
+      var groups = document.querySelectorAll('.cp-info-grid, .cp-social-list');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+        groups.forEach(function (list) {
+          var items = list.querySelectorAll('.cp-reveal');
+          items.forEach(function (el, i) {
+            el.style.transitionDelay = (i * 70) + 'ms';
+            io.observe(el);
+          });
+        });
+      } else {
+        document.querySelectorAll('.cp-reveal').forEach(function (el) { el.classList.add('is-visible'); });
+      }
+    })();
+  </script>
+
+</body>
+
+</html>
